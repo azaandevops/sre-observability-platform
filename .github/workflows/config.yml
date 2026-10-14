@@ -1,0 +1,14 @@
+name: observability-validation
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose config
+      - run: python - <<'PY'
+import yaml
+for f in ["prometheus/prometheus.yml","prometheus/alerts.yml","alertmanager/alertmanager.yml"]:
+    with open(f) as h: yaml.safe_load(h)
+print("YAML structure validated")
+PY

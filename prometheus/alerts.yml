@@ -1,0 +1,13 @@
+groups:
+- name: platform
+  rules:
+  - alert: TargetDown
+    expr: up == 0
+    for: 5m
+    labels: {severity: critical}
+    annotations: {summary: Monitoring target is unavailable}
+  - alert: HighMemory
+    expr: 100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 85
+    for: 10m
+    labels: {severity: warning}
+    annotations: {summary: Node memory utilization is high}
